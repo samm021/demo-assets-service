@@ -10,6 +10,7 @@
     <div v-if="previewUrl">
       <p>Preview URL:</p>
       <a :href="previewUrl" target="_blank">{{ previewUrl }}</a>
+      <img v-if="isImage" :src="previewUrl" alt="Image Preview" style="max-width: 100%; margin-top: 10px;" />
     </div>
     <p v-if="error">{{ error }}</p>
   </div>
@@ -30,7 +31,8 @@ export default {
     return {
       previewUrl: '',
       error: '',
-      response: null
+      response: null,
+      isImage: false
     }
   },
   methods: {
@@ -49,10 +51,32 @@ export default {
         this.response = response.data
         this.previewUrl = response.data.data.url
         this.error = ''
+        this.checkIfImage()
       } catch (error) {
         this.error = 'Error getting preview URL: ' + error.message
         this.previewUrl = ''
         this.response = null
+        this.isImage = false
+      }
+    },
+    checkIfImage() {
+      // Check if the URL contains image-related keywords
+      const imageKeywords = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp']
+      this.isImage = imageKeywords.some(keyword => this.previewUrl.toLowerCase().includes(keyword))
+      
+      // If not found in URL, try to check the content type
+      if (!this.isImage) {
+        this.checkContentType()
+      }
+    },
+    async checkContentType() {
+      try {
+        const response = await axios.head(this.previewUrl)
+        const contentType = response.headers['content-type']
+        this.isImage = contentType.startsWith('image/')
+      } catch (error) {
+        console.error('Error checking content type:', error)
+        this.isImage = false
       }
     }
   }
