@@ -1,6 +1,6 @@
 <template>
   <div class="component">
-    <h2>Asset Preview</h2>
+    <h2>Asset Preview & Get Presigned URL to View</h2>
     <h4>GET asset-service-url/asset/preview/:asset-id</h4>
     <button @click="getPreviewUrl" :disabled="!fileId">Get Preview URL</button>
     <div v-if="response">
@@ -41,9 +41,9 @@ export default {
       }
 
       try {
-        const response = await axios.get(`https://odin.staging.littlelives.com/asset/preview/${this.fileId}`, {
+        const response = await axios.get(`${process.env.VUE_APP_ODIN_SERVICE_URL}/asset/preview/${this.fileId}`, {
           headers: {
-            'Authorization': `Bearer ${process.env.VUE_APP_API_TOKEN}`
+            'Authorization': `Bearer ${process.env.VUE_APP_SV_BEARER_TOKEN}`
           }
         })
         this.response = response.data

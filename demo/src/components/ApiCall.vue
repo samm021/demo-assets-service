@@ -1,6 +1,6 @@
 <template>
   <div class="component">
-    <h2>Get PUT presigned URL</h2>
+    <h2>Create Asset & Get Presigned URL to Upload</h2>
     <h4>POST asset-service-url/asset/presigned-url</h4>
     <button @click="callApi" :disabled="!file">Get Presigned URL</button>
     <pre v-if="response">{{ response }}</pre>
@@ -41,9 +41,9 @@ export default {
       }
 
       try {
-        const result = await axios.post('https://odin.staging.littlelives.com/asset/presigned-url', payload, {
+        const result = await axios.post(`${process.env.VUE_APP_ODIN_SERVICE_URL}/asset/presigned-url`, payload, {
           headers: {
-            'Authorization': `Bearer ${process.env.VUE_APP_API_TOKEN}`,
+            'Authorization': `Bearer ${process.env.VUE_APP_SV_BEARER_TOKEN}`,
             'Content-Type': 'application/json'
           }
         });

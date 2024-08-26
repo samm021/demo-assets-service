@@ -60,25 +60,3 @@ export default {
   border-radius: 5px;
 }
 </style>
-
-
-<!-- [
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "GET",
-            "PUT",
-            "POST",
-            "DELETE"
-        ],
-        "AllowedOrigins": [
-            "http://localhost:8080",
-            "https://stg.pcf.sv.littlelives.com"
-        ],
-        "ExposeHeaders": [
-            "ETag"
-        ]
-    }
-] -->
