@@ -3,6 +3,9 @@
     <h2>Create Asset & Get Presigned URL to Upload</h2>
     <h4>POST asset-service-url/asset/presigned-url</h4>
     <button @click="callApi" :disabled="!file">Get Presigned URL</button>
+    <h4>Request payload</h4>
+    <pre v-if="request">{{ request }}</pre>
+    <h4>Request response</h4>
     <pre v-if="response">{{ response }}</pre>
   </div>
 </template>
@@ -20,7 +23,8 @@ export default {
   },
   data() {
     return {
-      response: null
+      response: null,
+      request: null,
     }
   },
   methods: {
@@ -39,6 +43,8 @@ export default {
           }
         ]
       }
+
+      this.setRequest(payload)
 
       try {
         const result = await axios.post(`${process.env.VUE_APP_ODIN_SERVICE_URL}/asset/presigned-url`, payload, {
@@ -65,6 +71,9 @@ export default {
         'application/pdf': 'DOCUMENT',
       }
       return mimeToEnum[mimeType] || 'OTHER'
+    },
+    setRequest(payload) {
+      return this.request = payload;
     }
   }
 }
